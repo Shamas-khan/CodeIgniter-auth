@@ -32,6 +32,12 @@ class UserController extends CI_Controller {
             $username = $this->input->post('username');
 			$password = $this->input->post('password');
 			$email = $this->input->post('email');
+			 // Check if the email is already registered
+			 if ($this->UserModel->isEmailRegistered($email)) {
+				$response['status'] = 'error';
+				$response['message'] = 'Email is already registered.';
+			} 
+			else{
 			$data =array("username"=>$username,"password"=>$password,"email"=>$email);
 			
 			
@@ -49,6 +55,7 @@ class UserController extends CI_Controller {
             $response['message'] = 'Registration failed.';
         }
         }
+	}
 		  // Send JSON response
 		  $this->output
 		  ->set_content_type('application/json')

@@ -50,7 +50,7 @@
                         <div class="form-outline flex-fill mb-0">
                           <input
                             type="email"
-                            id="useremail"
+                            id="email"
                             class="form-control"
                             name="email"
                           />
@@ -91,7 +91,7 @@
                         </div>
                         
                       </div>
-                      <div class="text-success m-3" id="result"></div>
+                      <div class=" m-3" id="result"></div>
                       <div
                         class="d-flex justify-content-center mx-4 mb-3 mb-lg-4"
                       >
@@ -104,11 +104,16 @@
                       
 <script>
     $(document).ready(function(){
+      // Clear error messages when input fields are focused
+      $('#username, #email, #password, #cpassword').focus(function() {
+        var fieldId = $(this).attr('id');
+        $('#' + fieldId + '_error').html('');
+      });
      
       $('#submit').click(function(e){
         e.preventDefault();
         var username= $('#username').val();
-      var email = $('#useremail').val();
+      var email = $('#email').val();
       var password=  $('#password').val();
       var cpass =$('#cpassword').val();
 
@@ -123,17 +128,17 @@
           success: function(response){
             if(response.status=="success")
             {
-              $('#result').html(response.message);
+              $('#result').addClass('text-success').html(response.message);
               setTimeout(function () {
                 window.location.href = "<?php echo base_url(); ?>";
             }, 1000);
             }
-           
+            
 
             
             else if(response.status == "error"){
               // Clear previous error messages
-              $('#result').html('');
+              $('#result').addClass('text-danger').html('');
 
               // Display validation errors
               $.each(response.errors, function(key, value){
@@ -141,6 +146,7 @@
               });
             }
             console.log(response);
+            $('#result').addClass('text-danger').html(response.message);
             
             
 
