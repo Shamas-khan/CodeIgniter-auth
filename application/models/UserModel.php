@@ -2,13 +2,17 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class UserModel extends CI_Model {  
+    public function __construct() {
+        parent::__construct();
+        $this->load->database(); 
+    }
 
     public function insertuser($data){
 
         $userData = array(
             'username' => $data['username'],
-            'password' => password_hash($data['password'], PASSWORD_BCRYPT), 
-            'email'    => $data['email']
+            'email'    => $data['email'], 
+            'password' => password_hash($data['password'], PASSWORD_BCRYPT)
            
         );
            // Insert user data into the database

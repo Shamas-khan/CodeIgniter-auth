@@ -14,6 +14,8 @@ class UserController extends CI_Controller {
 	{
 		$this->load->view('register');
 	}
+
+
 	public function userregister()
 	{
 		$this->form_validation->set_rules('username', 'Username', 'trim|required|min_length[3]|alpha');
@@ -25,15 +27,27 @@ class UserController extends CI_Controller {
             $response['status'] = 'error';
         		$response['errors'] = $this->form_validation->error_array();
         } else {
+			$this->load->model('UserModel');
+
             $username = $this->input->post('username');
 			$password = $this->input->post('password');
 			$email = $this->input->post('email');
 			$data =array("username"=>$username,"password"=>$password,"email"=>$email);
 			
-			$this->load->model('UserModel');
-			$this->UserModel->insertuser($data);
+			
+			if ($this->UserModel->insertuser($data)) {
 
-            $response = array('status' => 'success', 'message' => 'Registration successful!');
+            // Registration successful
+            $response['status'] = 'success';
+            $response['message'] = 'Registration successful!';
+			// redirect(base_url());
+
+        } 
+			else {
+            // Registration failed
+            $response['status'] = 'error';
+            $response['message'] = 'Registration failed.';
+        }
         }
 		  // Send JSON response
 		  $this->output

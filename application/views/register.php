@@ -124,6 +124,9 @@
             if(response.status=="success")
             {
               $('#result').html(response.message);
+              setTimeout(function () {
+                window.location.href = "<?php echo base_url(); ?>";
+            }, 1000);
             }
            
 
