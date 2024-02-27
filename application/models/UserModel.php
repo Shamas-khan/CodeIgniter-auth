@@ -22,14 +22,17 @@ class UserModel extends CI_Model {
            return $this->db->affected_rows() > 0;
        }
 
+       
        public function isEmailRegistered($email)
-        {
-                $this->db->where('email', $email);
-                
-                $query = $this->db->get('users');
-
-                return $query->num_rows() > 0;
-        }
+       {
+           $this->db->where('email', $email);
+           $query = $this->db->get('users');
+           
+           // Return user data if found, otherwise return false
+           return $query->num_rows() > 0 ? $query->row_array() : false;
+       }
+       
+        
    
 } 
 

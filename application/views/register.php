@@ -37,13 +37,11 @@
                             id="username"
                             class="form-control"
                             name="username"
+                            placeholder="Your Name"
                           />
-                          <label class="form-label" for="form3Example1c"
-                            >User Name</label
-                          >
+                          <div class="text-danger ms-3" id="username_error"></div>
                         </div>
                       </div>
-                      <div class="text-danger m-3" id="username_error"></div>
 
                       <div class="d-flex flex-row align-items-center mb-4">
                         <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
@@ -53,13 +51,11 @@
                             id="email"
                             class="form-control"
                             name="email"
+                            placeholder="Your Email"
                           />
-                          <label class="form-label" for="form3Example3c"
-                            >Your Email</label
-                          >
+                          <div class="text-danger ms-3" id="email_error"></div>
                         </div>
                       </div>
-                      <div class="text-danger m-3" id="email_error"></div>
 
                       <div class="d-flex flex-row align-items-center mb-4">
                         <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
@@ -69,13 +65,11 @@
                             id="password"
                             class="form-control"
                             name="password"
+                            placeholder="Password"
                           />
-                          <label class="form-label" for="form3Example4c"
-                            >Password</label
-                          >
+                          <div class="text-danger ms-3" id="password_error"></div>
                         </div>
                       </div>
-                      <div class="text-danger m-3" id="password_error"></div>
 
                       <div class="d-flex flex-row align-items-center mb-4">
                         <i class="fas fa-key fa-lg me-3 fa-fw"></i>
@@ -84,14 +78,12 @@
                             type="password"
                             id="cpassword"
                             class="form-control"
+                            placeholder="Confirm Password"
                           />
-                          <label class="form-label" for="form3Example4cd"
-                            >Repeat your password</label
-                          >
+                          <div class="ms-3" id="result"></div>
                         </div>
                         
                       </div>
-                      <div class=" m-3" id="result"></div>
                       <div
                         class="d-flex justify-content-center mx-4 mb-3 mb-lg-4"
                       >
@@ -102,63 +94,62 @@
                       <a href="<?php echo base_url(); ?>">Already have an account</a>
 
                       
+
+
 <script>
     $(document).ready(function(){
       // Clear error messages when input fields are focused
       $('#username, #email, #password, #cpassword').focus(function() {
         var fieldId = $(this).attr('id');
         $('#' + fieldId + '_error').html('');
+      
       });
-     
+
       $('#submit').click(function(e){
         e.preventDefault();
-        var username= $('#username').val();
-      var email = $('#email').val();
-      var password=  $('#password').val();
-      var cpass =$('#cpassword').val();
+        var username = $('#username').val();
+        var email = $('#email').val();
+        var password = $('#password').val();
+        var cpass = $('#cpassword').val();
+        var passwordMatch = (password === cpass);
 
-      if(password !==cpass){
-        alert("password not match");
-
-      }
-        $.ajax({
-          url:"UserController/userregister",
-          method:"POST",
-          data:{username,email,password },
-          success: function(response){
-            if(response.status=="success")
-            {
-              $('#result').addClass('text-success').html(response.message);
-              setTimeout(function () {
-                window.location.href = "<?php echo base_url(); ?>";
-            }, 1000);
-            }
-            
-
-            
-            else if(response.status == "error"){
-              // Clear previous error messages
-              $('#result').addClass('text-danger').html('');
-
-              // Display validation errors
-              $.each(response.errors, function(key, value){
-                $('#' + key + '_error').html(value);
-              });
-            }
-            console.log(response);
-            $('#result').addClass('text-danger').html(response.message);
-            
-            
-
-          }
+        if (!passwordMatch) {
+          $('#password_error').addClass('text-danger').html("Passwords do not match");
+        } else {
+          $('#password_error').html('');  // Clear password error on successful match
           
+          $.ajax({
+            url: "UserController/userregister",
+            method: "POST",
+            data: {username, email, password},
+            success: function(response){
+              if(response.status == "success") {
+                $('#result').addClass('text-success').html(response.message);
+                $('#username, #email, #password, #cpassword').val('');
+                setTimeout(function () {
+                  window.location.href = "<?php echo base_url(); ?>";
+                }, 1000);
+              } else if(response.status == "error") {
+                // Clear previous error messages
+                $('#result').html('');
 
-        })
-
-      
-      })  
+                // Display validation errors
+                $.each(response.errors, function(key, value){
+                  $('#' + key + '_error').html(value);
+                 
+                });
+              }
+              
+              
+            }
+          });
+        }
+      });
     });
 </script>
+
+
+
 
                     </form>
                   </div>

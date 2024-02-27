@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <base href="<?= base_url() ?>">
+    <base href="<?=base_url()?>">
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -28,54 +28,95 @@
                     </p>
 
                     <form class="mx-1 mx-md-4">
-                      <div class="d-flex flex-row align-items-center mb-4">
-                        <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
+                      <div class="d-flex flex-row align-items-center mb-1" id="emailwrap">
+
                         <div class="form-outline flex-fill mb-0">
                           <input
                             type="email"
-                            id="form3Example3c"
+                            id="email"
                             class="form-control"
+                            placeholder="Email"
                           />
-                          <label class="form-label" for="form3Example3c"
-                            >Your Email</label
-                          >
+
                         </div>
                       </div>
 
-                      <div class="d-flex flex-row align-items-center mb-4">
-                        <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
+
+                      <div class="d-flex flex-row align-items-center mb-1" id="passwrap">
+
                         <div class="form-outline flex-fill mb-0">
                           <input
                             type="password"
-                            id="form3Example4c"
+                            id="password"
                             class="form-control"
+                            placeholder="Password"
                           />
-                          <label class="form-label" for="form3Example4c"
-                            >Password</label
-                          >
-                        </div>
+                       </div>
                       </div>
+                      <div class="" id="result"></div>
+
 
                       <div
                         class="d-flex justify-content-center mx-4 mb-3 mb-lg-4"
                       >
-                        <button type="button" class="btn btn-primary btn-lg">
+                        <button type="button" id="login" class="btn btn-primary btn-lg">
                           Login
                         </button>
                       </div>
                       <a href="user_register">Register yourself</a>
                     </form>
+
+                    <script>
+    $(document).ready(function () {
+      $(' #email, #password').focus(function() {
+        var fieldId = $(this).attr('id');
+        $('#' + fieldId + '_error').html('');
+        $('#result').html('')
+
+      });
+        $('#login').click(function (e) {
+            e.preventDefault();
+
+            var email = $('#email').val();
+            var password = $('#password').val();
+
+            $.ajax({
+                url: "UserController/index",
+                method: "POST",
+                data: { email: email, password: password },
+                success: function (response) {
+                  if(response.status == 'success'){
+                    window.location.href = "<?php echo base_url('dashboard'); ?>";
+                  }
+
+                    if (response.status == "error") {
+                        $('#passwrap').after('<div class="text-danger " id="password_error"></div>');
+                        $('#emailwrap').after('<div class="text-danger " id="email_error"></div>');
+                        $.each(response.errors, function (key, value) {
+                            $('#' + key + '_error').html(value);
+                        });
+                        $('#result').addClass('text-danger').html(response.message)
+
+                        console.log(response);
+                    }
+                }
+            });
+        });
+    });
+</script>
+
+
                   </div>
                   <div
                     class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2"
                   >
                     <img
-                    src="<?php echo base_url() . 'assets\draw1.webp';?>"
+                    src="<?php echo base_url() . 'assets\draw1.webp'; ?>"
                     class="img-fluid"
                       alt="Sample image"
                     />
                   </div>
-                 
+
                 </div>
               </div>
             </div>
@@ -87,6 +128,6 @@
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
       crossorigin="anonymous"
-    ></script>
+    ></scrip>
   </body>
 </html>
