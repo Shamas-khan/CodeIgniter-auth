@@ -74,6 +74,10 @@
         $('#result').html('')
 
       });
+      function clearForm() {
+                        $('#email, #password').val('');
+                        $('#email_error, #password_error, #result').html('');
+                      }
         $('#login').click(function (e) {
             e.preventDefault();
 
@@ -86,7 +90,8 @@
                 data: { email: email, password: password },
                 success: function (response) {
                   if(response.status == 'success'){
-                    window.location.href = "<?php echo base_url('dashboard'); ?>";
+                    window.location.href = "<?php echo base_url('index'); ?>";
+                    clearForm()
                   }
 
                     if (response.status == "error") {
@@ -97,7 +102,7 @@
                         });
                         $('#result').addClass('text-danger').html(response.message)
 
-                        console.log(response);
+
                     }
                 }
             });
