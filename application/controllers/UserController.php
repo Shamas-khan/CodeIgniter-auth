@@ -79,6 +79,7 @@ class UserController extends CI_Controller
             $response['status'] = 'error';
             $response['message'] = 'Invalid input';
             $response['errors'] = $this->form_validation->error_array();
+
         } else {
             $username = $this->input->post('username');
             $password = $this->input->post('password');
@@ -95,9 +96,6 @@ class UserController extends CI_Controller
                     $response['status'] = 'success';
                     $response['message'] = 'Registration successful!';
 
-                    // Optionally, you can automatically log in the user after registration
-                    // Set the user data in the session as per your authentication flow
-                    $this->session->set_userdata('user_id', $newlyRegisteredUserId);
                 } else {
                     $response['status'] = 'error';
                     $response['message'] = 'Registration failed.';

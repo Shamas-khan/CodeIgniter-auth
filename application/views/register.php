@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <base href="<?= base_url() ?>">
+    <base href="<?=base_url()?>">
 
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
@@ -82,7 +82,7 @@
                           />
                           <div class="ms-3" id="result"></div>
                         </div>
-                        
+
                       </div>
                       <div
                         class="d-flex justify-content-center mx-4 mb-3 mb-lg-4"
@@ -93,7 +93,7 @@
                       </div>
                       <a href="<?php echo base_url(); ?>">Already have an account</a>
 
-                      
+
 
 
 <script>
@@ -102,7 +102,7 @@
       $('#username, #email, #password, #cpassword').focus(function() {
         var fieldId = $(this).attr('id');
         $('#' + fieldId + '_error').html('');
-      
+
       });
 
       $('#submit').click(function(e){
@@ -117,12 +117,13 @@
           $('#password_error').addClass('text-danger').html("Passwords do not match");
         } else {
           $('#password_error').html('');  // Clear password error on successful match
-          
+
           $.ajax({
-            url: "UserController/userregister",
+            url: "register",
             method: "POST",
             data: {username, email, password},
             success: function(response){
+              console.log(response);
               if(response.status == "success") {
                 $('#result').addClass('text-success').html(response.message);
                 $('#username, #email, #password, #cpassword').val('');
@@ -136,11 +137,11 @@
                 // Display validation errors
                 $.each(response.errors, function(key, value){
                   $('#' + key + '_error').html(value);
-                 
+
                 });
               }
-              
-              
+
+
             }
           });
         }
@@ -157,7 +158,7 @@
                     class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2"
                   >
                     <img
-                      src="<?php echo base_url() . 'assets\draw1.webp';?>"
+                      src="<?php echo base_url() . 'assets\draw1.webp'; ?>"
                       class="img-fluid"
                       alt="Sample image"
                     />
