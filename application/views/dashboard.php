@@ -22,17 +22,22 @@ echo "User Email: " . $userData['user_email'];
 
     <script>
     $(document).ready(function() {
+
         $('#logout').click(function() {
             $.ajax({
                 url: "<?php echo base_url('logout'); ?>",
                 method: "POST",
                 success: function(response) {
-                    // if (response.status === 'success') {
-                    //     window.location.href = "<?php echo base_url(); ?>";
-                    // } else {
-                    //     // Handle any error cases if needed
-                    //     console.error('Logout failed: ' + response.message);
-                    // }
+
+                    if (response.status === 'success') {
+                        window.location.href = "<?php echo base_url(); ?>";
+                    } else if(response.status === 'error'){
+                        console.error('Logout failed: ' + response.message);
+                    }
+                    else {
+                        // Handle any error cases if needed
+                        console.error('Logout failed: ' + response.message);
+                    }
                 }
             });
         });

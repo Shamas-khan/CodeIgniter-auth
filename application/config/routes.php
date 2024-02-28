@@ -53,5 +53,5 @@ $route['default_controller'] = 'UserController'; //user login
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = false;
 $route['user_register'] = 'UserController/register'; // User register
-$route['index'] = 'DashboardController'; // dashboard
+$route['index'] = 'DashboardController/index'; // dashboard
 $route['logout'] = 'UserController/logout'; // user  logout

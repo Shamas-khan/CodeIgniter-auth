@@ -8,16 +8,15 @@ class UserController extends CI_Controller
     {
         parent::__construct();
 
-        // Check if the user is already logged in
-        if ($this->session->userdata('user_id')) {
-            redirect('index');
-        }
-
         $this->load->model('UserModel');
     }
 
     public function index()
     {
+        // // Check if the user is already logged in
+        if ($this->session->userdata('user_id')) {
+            redirect('index');
+        }
 
         if ($this->input->post()) {
 
@@ -62,11 +61,16 @@ class UserController extends CI_Controller
     }
     public function register()
     {
+        // Check if the user is already logged in
+        if ($this->session->userdata('user_id')) {
+            redirect('index');
+        }
         $this->load->view('register');
     }
 
     public function userregister()
     {
+
         $this->form_validation->set_rules('username', 'Username', 'trim|required|min_length[3]|alpha');
         $this->form_validation->set_rules('password', 'password', 'trim|required');
         $this->form_validation->set_rules('email', 'email', 'trim|required|valid_email');
@@ -90,6 +94,10 @@ class UserController extends CI_Controller
                 if ($this->UserModel->insertuser($data)) {
                     $response['status'] = 'success';
                     $response['message'] = 'Registration successful!';
+
+                    // Optionally, you can automatically log in the user after registration
+                    // Set the user data in the session as per your authentication flow
+                    $this->session->set_userdata('user_id', $newlyRegisteredUserId);
                 } else {
                     $response['status'] = 'error';
                     $response['message'] = 'Registration failed.';
@@ -106,12 +114,12 @@ class UserController extends CI_Controller
     {
         // Check if the user is logged in
         if ($this->session->userdata('user_id')) {
-            // Clear user data from session
+            // Clear all session data
             $this->session->unset_userdata('user_id');
             $this->session->unset_userdata('user_name');
             $this->session->unset_userdata('user_email');
             $this->session->sess_destroy();
-            redirect(base_url());
+
             $response['status'] = 'success';
             $response['message'] = 'Logout successful!';
         } else {
