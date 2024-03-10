@@ -100,6 +100,7 @@
     $(document).ready(function(){
       // Clear error messages when input fields are focused
       $('#username, #email, #password, #cpassword').focus(function() {
+        $('#result').html('');
         var fieldId = $(this).attr('id');
         $('#' + fieldId + '_error').html('');
 
@@ -132,7 +133,8 @@
                 }, 1000);
               } else if(response.status == "error") {
                 // Clear previous error messages
-                $('#result').html('');
+                $('#result').addClass('text-danger').html(response.message);
+                // $('#result').html('');
 
                 // Display validation errors
                 $.each(response.errors, function(key, value){
